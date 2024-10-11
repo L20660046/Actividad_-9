@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cronómetro</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-image: url('ruta/a/tu/imagen.jpg'); /* Cambia esta ruta */
+            background-size: cover; /* Ajusta la imagen para cubrir todo el fondo */
+            background-position: center; /* Centra la imagen */
+        }
+        #display {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: white; /* Cambia el color según necesites */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7); /* Sombra para mejorar la legibilidad */
+        }
+        button {
+            margin: 5px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div id="display">00:00:00</div>
+<button id="start">Iniciar</button>
+<button id="pause">Pausar</button>
+<button id="reset">Reiniciar</button>
+
+<script>
+    let startTime;
+    let updatedTime;
+    let difference;
+    let tInterval;
+    let running = false;
+
+    const display = document.getElementById('display');
+
+    function startTimer() {
+        if (!running) {
+            startTime = new Date().getTime();
+            tInterval = setInterval(updateTime, 1000);
+            running = true;
+        }
+    }
+
+    function updateTime() {
+        updatedTime = new Date().getTime();
+        difference = updatedTime - startTime;
+
+        const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+        display.innerHTML = `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+    }
+
+    function pauseTimer() {
+        clearInterval(tInterval);
+        running = false;
+    }
+
+    function resetTimer() {
+        clearInterval(tInterval);
+        running = false;
+        display.innerHTML = "00:00:00";
+    }
+
+    document.getElementById('start').addEventListener('click', startTimer);
+    document.getElementById('pause').addEventListener('click', pauseTimer);
+    document.getElementById('reset').addEventListener('click', resetTimer);
+</script>
+
+</body>
+</html>
